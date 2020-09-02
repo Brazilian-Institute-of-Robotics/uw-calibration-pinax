@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node name="jir_image_remapper_left" type="jir_image_remapper" pkg="jir_image_remapper" output="screen" respawn="true">
+		<param name="left_map" value="$(find jir_image_remapper)/config/left_rect_map.yaml"/>
+		<remap from="~in_left" to="/nerian_stereo/left_image"/>
+		<remap from="~out_left_rect/image_raw" to="rectified/left/image"/>
+	</node>
+
+    <node name="jir_image_remapper_right" type="jir_image_remapper" pkg="jir_image_remapper" output="screen" respawn="true">
+        <param name="left_map" value="$(find jir_image_remapper)/config/right_rect_map.yaml"/>
+        <remap from="~in_left" to="/nerian_stereo/right_image"/>
+        <remap from="~out_left_rect/image_raw" to="rectified/right/image"/>
+	</node>
+</launch>
