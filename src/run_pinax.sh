@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Read the calibration params file
-params_file='/root/input_data/calibration_params.txt'
+params_file='/home/miguel/catkin_ws/src/uw-calibration-pinax/input_data/calibration_params.txt'
 params[0]='start'
 cc=0
 
@@ -11,16 +11,16 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
         params[$c]="$(cut -d' ' -f2 <<<$line)"
 done < "$params_file"
 
-if [ ${params[2]} = "true" ] || [ ${params[2]} = "True" ]; then  
-	cd /root/camodocal/build/bin/
-	/bin/bash -c "./stereo_calib -w ${params[3]} -h ${params[4]} -s ${params[5]} --camera-model ${params[6]} -v -i /root/input_data/raw_imgs/ -o /root/output_data/calibration_files/"
-	chmod a+rw /root/output_data/calibration_files/*
-fi
 
-if [ ${params[9]} = "true" ] || [ ${params[9]} = "True" ]; then
-	cd /root/pinax/src
-	nohup /opt/ros/kinetic/bin/roscore &
-	sleep 5
-	/bin/bash -c "rosrun defraction_map_finder stereo_defraction_map_finder -i /root/output_data/calibration_files -o /root/output_data/pinax_maps --refraction-d0 ${params[10]} --refraction-d0-offset ${params[11]} --refraction-d1 ${params[12]} --refraction-n-glass ${params[13]} --refraction-n-water ${params[14]} --rectified-f ${params[15]} --rectified-width ${params[16]} --rectified-height ${params[17]} --rectified-cx ${params[18]} --rectified-cy ${params[19]}"
-	chmod a+rw /root/output_data/pinax_maps/*
-fi
+
+/bin/bash -c "rosrun defraction_map_finder stereo_defraction_map_finder -i /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/calibration_files -o /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/pinax_maps --refraction-d0 ${params[8]} --refraction-d0-offset ${params[9]} --refraction-d1 ${params[10]} --refraction-n-glass ${params[11]} --refraction-n-water ${params[12]} --rectified-f ${params[13]} --rectified-width ${params[14]} --rectified-height ${params[15]} --rectified-cx ${params[16]} --rectified-cy ${params[17]}"
+chmod a+rw /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data*
+
+
+#rosrun defraction_map_finder stereo_defraction_map_finder -i /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/calibration_files -o /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/pinax_maps --refraction-d0 0.035 --refraction-d0-offset 0.00165 --refraction-d1 0.008 --refraction-n-glass 1.7751  --refraction-n-water 1.34 --rectified-f 2774 --rectified-width 1920 --rectified-height 1216 .--rectified-cx 960 --rectified-cy 608"
+
+#rosrun defraction_map_finder stereo_defraction_map_finder -i /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/calibration_files -o /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/pinax_maps --refraction-d0 0.035 --refraction-d0-offset 0.0165 --refraction-d1 0.008 --refraction-n-glass 1.7751  --refraction-n-water 1.34 --rectified-f 2704.197396 --rectified-width 1920 --rectified-height 1216 --rectified-cx 969.445747 --rectified-cy 602.449646 --show-masks true
+
+
+#rosrun defraction_map_finder stereo_defraction_map_finder -i /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/calibration_files -o /home/miguel/catkin_ws/src/uw-calibration-pinax/output_data/pinax_maps --refraction-d0 0.035 --refraction-d0-offset 0.0165 --refraction-d1 0.008 --refraction-n-glass 1.7751  --refraction-n-water 1.34 --rectified-f 2704.0572102790347 --rectified-width 1920 --rectified-height 1216 --rectified-cx 968.9917373657227 --rectified-cy 602.4532623291016 --show-masks true
+
