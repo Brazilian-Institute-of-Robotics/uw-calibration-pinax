@@ -2,8 +2,8 @@
 
 <launch>
 	<node name="jir_image_remapper_stereo" type="jir_image_remapper_stereo" pkg="jir_image_remapper_stereo" output="screen" respawn="true">
-        <param name="left_map" value="$(find uw-calibration-pinax)/output_data/pinax_maps/left_rect_map.yaml.gz"/>
-		<param name="right_map" value="$(find uw-calibration-pinax)/output_data/pinax_maps/right_rect_map.yaml.gz"/>
+        <param name="left_map" value="$(find jir_image_remapper_stereo)/../output_data/pinax_maps/left_rect_map.yaml.gz"/>
+		<param name="right_map" value="$(find jir_image_remapper_stereo)/../output_data/pinax_maps/right_rect_map.yaml.gz"/>
 		<remap from="~in_left" to="/nerian_stereo/left_image"/>
 		<remap from="~out_left_rect/image_raw" to="rectified/left/image"/>
 		<remap from="~in_right" to="/nerian_stereo/right_image"/>
