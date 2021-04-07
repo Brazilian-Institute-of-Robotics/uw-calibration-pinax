@@ -13,6 +13,7 @@
 
   <exec_depend>defraction_map_finder</exec_depend>
   <exec_depend>jir_image_remapper</exec_depend>
+  <exec_depend>jir_image_remapper _stereo</exec_depend>
   <exec_depend>jir_rectification_remap_lib</exec_depend>
   <exec_depend>jir_refractive_image_geometry</exec_depend>
   <exec_depend>jir_refractive_image_geometry_msgs</exec_depend>
