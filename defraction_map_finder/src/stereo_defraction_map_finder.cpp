@@ -87,7 +87,10 @@ int main(int argc, char** argv)
 	
 	//**** read extrinsics ****
 	Vector3d tr; Matrix3d R;
+	
 	ok = read_extrinsics(op.extrinsics_fn, tr, R);
+
+	std::cout << R << std::endl;
 
 	if(!ok) {
 		std::cerr << "error reading extrinsics" << std::endl;
@@ -166,7 +169,18 @@ int main(int argc, char** argv)
 	
 	info.K[8]=1;
 	
-	info.R[0] = info.R[4] = info.R[8] = 1.0;
+	//info.R[0] = info.R[4] = info.R[8] = 1.0;
+
+	info.R[0]=R(0,0);
+	info.R[1]=R(0,1);
+	info.R[2]=R(0,2);
+	info.R[3]=R(1,0);
+	info.R[4]=R(1,1);
+	info.R[5]=R(1,2);
+	info.R[6]=R(2,0);
+	info.R[7]=R(2,1);
+	info.R[8]=R(2,2);
+
 
 	info.P[0] = op.output_focal_length;
 	info.P[2] = op.output_cx;
@@ -218,8 +232,8 @@ int main(int argc, char** argv)
 	cout << op.output_left_map_fn << endl;
 	cout << op.output_right_map_fn << endl;
 
-	find_left.saveMaps(op.output_left_map_fn, baseline);
-	find_right.saveMaps(op.output_right_map_fn, 0);
+	find_left.saveMaps(op.output_left_map_fn, 0);
+	find_right.saveMaps(op.output_right_map_fn, baseline);
 
 
 	if(op.show_masks) {
@@ -266,8 +280,18 @@ bool read_extrinsics(const std::string& fn, Eigen::Vector3d& tr, Eigen::Matrix3d
     tr[2] = static_cast<double>(n["t_z"]);
     
     Quaternion<double> q (static_cast<double>(n["q_w"]), static_cast<double>(n["q_x"]),static_cast<double>(n["q_y"]),static_cast<double>(n["q_z"])); 
-    R=q.toRotationMatrix();
+    // R=q.toRotationMatrix();
+    R(0,0) = static_cast<double>(n["r_00"]);
+    R(0,1) = static_cast<double>(n["r_01"]);
+    R(0,2) = static_cast<double>(n["r_02"]);
 
+    R(1,0) = static_cast<double>(n["r_10"]);
+    R(1,1) = static_cast<double>(n["r_11"]);
+    R(1,2) = static_cast<double>(n["r_12"]);
+
+    R(2,0) = static_cast<double>(n["r_20"]);
+    R(2,1) = static_cast<double>(n["r_21"]);
+    R(2,2) = static_cast<double>(n["r_22"]);
     return true;
 }
 
