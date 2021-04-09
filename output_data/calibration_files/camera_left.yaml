@@ -3,7 +3,7 @@
 model_type: PINHOLE
 camera_name: camera_left
 image_width: 1920
-image_height: 1216
+image_height: 1200
 distortion_parameters:
    k1: 0
    k2: 0

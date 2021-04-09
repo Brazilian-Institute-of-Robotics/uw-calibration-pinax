@@ -14,7 +14,7 @@ n_glass 1.7751
 n_water 1.34
 focal_length 580
 im_width 1920
-im_height 1216
+im_height 1200
 cx 960
 cy 608
 END
