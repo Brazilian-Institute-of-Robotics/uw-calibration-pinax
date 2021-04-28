@@ -192,7 +192,16 @@ using namespace camodocal;
 			}
 		}
 		
+		Mat R (3, 3, DataType<float>::type);
+		for (int i=0; i<3; i++){
+			for (int j=0;j<3;j++){
+				R.at<float>(i,j)=camera_info.R[i*3+j];
+			}
+		}
+
 		fs << "camera_info" << K;
+
+		fs << "camera_rotation" << R;
 		
 		fs << "input_rows" << myCamera->imageHeight();
 		fs << "input_cols" << myCamera->imageWidth();
