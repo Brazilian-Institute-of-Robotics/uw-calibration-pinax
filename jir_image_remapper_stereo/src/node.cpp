@@ -34,6 +34,7 @@
 
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
+#include <message_filters/sync_policies/approximate_time.h>
 #include <image_transport/image_transport.h>
 #include <image_transport/subscriber_filter.h>
 
@@ -73,8 +74,8 @@ void process(const sensor_msgs::Image::ConstPtr& left, const sensor_msgs::Image:
 	cv_bridge::CvImageConstPtr cv_right;
     try
     {
-      cv_left = cv_bridge::toCvShare(left, sensor_msgs::image_encodings::MONO8 );
-	  cv_right = cv_bridge::toCvShare(right, sensor_msgs::image_encodings::MONO8 );  
+      cv_left = cv_bridge::toCvShare(left, sensor_msgs::image_encodings::BGR8 );
+	  cv_right = cv_bridge::toCvShare(right, sensor_msgs::image_encodings::BGR8 );  
     }
     catch (cv_bridge::Exception& e)
     {
@@ -96,14 +97,14 @@ void process(const sensor_msgs::Image::ConstPtr& left, const sensor_msgs::Image:
 
 
 	left_rect.header = cv_left->header;
-	left_rect.encoding = sensor_msgs::image_encodings::MONO8;
+	left_rect.encoding = sensor_msgs::image_encodings::BGR8;
 
 	left_rect.toImageMsg(left_rect_msg);
 	left_info.header = left_rect_msg.header;
 	left_rect_pub.publish( left_rect_msg, left_info);
 
 	right_rect.header = cv_right->header;
-	right_rect.encoding = sensor_msgs::image_encodings::MONO8;
+	right_rect.encoding = sensor_msgs::image_encodings::BGR8;
 
 	right_rect.toImageMsg(right_rect_msg);
 	right_info.header = right_rect_msg.header;
@@ -149,9 +150,12 @@ int main(int argc, char *argv[])
 
 	message_filters::Subscriber<sensor_msgs::Image> left_sub(nh, "in_left", 1);
 	message_filters::Subscriber<sensor_msgs::Image> right_sub(nh, "in_right", 1);
-	TimeSynchronizer<sensor_msgs::Image, sensor_msgs::Image> sync(left_sub,right_sub , 10);
+	
+	typedef sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy;
+	
+	//TimeSynchronizer<sensor_msgs::Image, sensor_msgs::Image> sync(left_sub,right_sub , 1500);
+	Synchronizer<MySyncPolicy> sync(MySyncPolicy(10),left_sub,right_sub);
 	sync.registerCallback(boost::bind(&process, _1, _2));
-
 
 
 	ROS_INFO_STREAM("NODE READY");
