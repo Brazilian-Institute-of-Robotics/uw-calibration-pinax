@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
 <launch>
-	<node name="jir_image_remapper_stereo" type="jir_image_remapper_stereo" pkg="jir_image_remapper_stereo" output="screen" respawn="true">
+	<node name="jir_image_remapper_stereo" type="jir_image_remapper_stereo" pkg="jir_image_remapper_stereo" respawn="true">
         <param name="left_map" value="$(find jir_image_remapper_stereo)/../output_data/pinax_maps/left_rect_map.yaml.gz"/>
 		<param name="right_map" value="$(find jir_image_remapper_stereo)/../output_data/pinax_maps/right_rect_map.yaml.gz"/>
 		<remap from="~in_left" to="/stereo/left/image_rect_color"/>
-		<remap from="~out_left_rect/image_raw" to="stereo/left/image"/>
+		<remap from="~out_left_rect/image_raw" to="stereo/left/image_pinax"/>
 		<remap from="~in_right" to="/stereo/right/image_rect_color"/>
-		<remap from="~out_right_rect/image_raw" to="stereo/right/image"/>
+		<remap from="~out_right_rect/image_raw" to="stereo/right/image_pinax"/>
 
 		<remap from="/stereo/left/camera_info" to="/stereo/left/pinax_camera_info"/>
 		<remap from="/stereo/right/camera_info" to="/stereo/right/pinax_camera_info"/>
